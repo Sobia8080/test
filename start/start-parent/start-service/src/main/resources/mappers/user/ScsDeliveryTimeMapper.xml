@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liu.start.dao.ScsDeliveryTimeMapper">
+
+	<!--实体映射-->
+	<resultMap id="BaseResultMap" type="com.liu.start.entity.ScsDeliveryTime">
+		<!--id主键-->
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<!--24小时送达数-->
+		<id column="time24" jdbcType="INTEGER" property="time24" />
+		<!--48小时送达数-->
+		<id column="time48" jdbcType="INTEGER" property="time48" />
+		<!--72小时送达数-->
+		<id column="time72" jdbcType="INTEGER" property="time72" />
+		<!--96小时送达数-->
+		<id column="time96" jdbcType="INTEGER" property="time96" />
+		<!--96小时以上送达数-->
+		<id column="timegt96" jdbcType="INTEGER" property="timegt96" />
+		<!--订单总数-->
+		<id column="total" jdbcType="INTEGER" property="total" />
+		<!--平台-->
+		<id column="platform" jdbcType="VARCHAR" property="platform" />
+		<!--省份 -->
+		<id column="province" jdbcType="VARCHAR" property="province" />
+		<!--承运商id -->
+		<id column="carrier_id" jdbcType="VARCHAR" property="carrierId" />
+		<!--仓库id-->
+		<id column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+		<!--订单统计时间-->
+		<id column="count_time" jdbcType="TIMESTAMP" property="countTime" />
+		<!--创建时间-->
+		<id column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<!--创建人-->
+		<id column="create_by" jdbcType="VARCHAR" property="createBy" />
+	</resultMap>
+
+
+	<!-- 通用的字段 -->
+	<sql id="Base_Column_List">
+		 id,	time24,	time48,	time72,	time96,	timegt96,	total,	platform,	province,	carrier_id,	warehouse_id,	count_time,	create_time,	create_by
+	</sql>
+
+
+	<!-- 批量添加数据，添加所有字段的数据-->
+	<insert id="batchInsert" parameterType="com.liu.start.entity.ScsDeliveryTime">
+		INSERT INTO scs_delivery_time(<include refid="Base_Column_List" />)
+		VALUES
+		<foreach collection ="batchField" item="bean" index= "index" separator =",">
+			(
+			#{bean.id},
+			#{bean.time24},
+			#{bean.time48},
+			#{bean.time72},
+			#{bean.time96},
+			#{bean.timegt96},
+			#{bean.total},
+			#{bean.platform},
+			#{bean.province},
+			#{bean.carrierId},
+			#{bean.warehouseId},
+			#{bean.countTime},
+			now(),
+			#{bean.createBy}
+			)
+		</foreach >
+	</insert>
+
+</mapper>

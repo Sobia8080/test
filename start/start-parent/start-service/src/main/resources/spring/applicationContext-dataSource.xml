@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <!--开启注解（省去@Resouce,@Autowared等的注解，注册bean）
+        <context:component-scan base-package="pack.pack"/>或者使用包扫描后可以去掉改配置
+    -->
+    <context:annotation-config/>
+
+    <!--引入properties文件-->
+    <!--<bean id="propertyConfigurer" class="com.liu.start.framework.kit.CustomizedPropertyConfigurer">-->
+        <!--&lt;!&ndash; 忽略没有找到的资源文件 &ndash;&gt;-->
+        <!--<property name="ignoreResourceNotFound" value="true" />-->
+        <!--<property name="locations">-->
+            <!--<list>-->
+                <!--<value>file:/etc/start/dbprivatekey.properties</value>-->
+                <!--<value>classpath*:config/*.properties</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <context:property-placeholder location="classpath*:config/*.properties"/>
+    <!-- 02.配置SessionFactory -->
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:spring/mybatis-configuration.xml"></property>
+        <property name="mapperLocations" value="classpath:mappers/**/*.xml" />
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.liu.start.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="60000" />
+        <property name="driverClassName" value="${jdbc.driverClassName.mysql}" />
+        <property name="url" value="${jdbc.url.mysql}" />
+        <property name="username" value="${jdbc.username.mysql}" />
+        <property name="password" value="${jdbc.password.mysql}" />
+        <!-- 连接池最大使用连接数量 -->
+        <property name="maxActive" value="${jdbc.max.pool.size}" />
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="${jdbc.min.pool.size}" />
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="${jdbc.min.pool.size}" />
+        <!--建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效-->
+        <property name="testWhileIdle" value="true" />
+        <!--用来检测连接是否有效的sql，要求是一个查询语句。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用-->
+        <property name="validationQuery" value="select 1" />
+        <!--属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
+            监控统计用的filter:stat日志用的filter:log4j防御sql注入的filter:wall-->
+        <property name="filters" value="config" />
+    </bean>
+
+
+
+
+</beans>

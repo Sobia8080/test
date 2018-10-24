@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.liu.frame.ssm</groupId>
-    <artifactId>ssm-test</artifactId>
+    <groupId>com.liu.start</groupId>
+    <artifactId>start-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>test-web</module>
+        <module>start-remote</module>
+        <module>start-web</module>
+        <module>start-service</module>
     </modules>
-
-
     <properties>
         <spring-version>5.0.5.RELEASE</spring-version>
         <mybatis-version>3.4.6</mybatis-version>
@@ -27,6 +27,7 @@
         <javax-jsp-version>2.2</javax-jsp-version>
         <jstl-version>1.2</jstl-version>
         <taglibs-version>1.1.2</taglibs-version>
+        <jackson-version>2.9.3</jackson-version>
     </properties>
 
     <dependencies>
@@ -245,8 +246,23 @@
             <artifactId>poi-scratchpad</artifactId>
             <version>3.9</version>
         </dependency>
+
+        <!-- json解析，否则页面无法返回JSON数据 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
     </dependencies>
-
-
 
 </project>
